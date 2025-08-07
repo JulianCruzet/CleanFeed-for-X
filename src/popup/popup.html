@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CleanFeed for X</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="compact-popup">
+    <div class="main-controls">
+      <div class="title-row">
+        <h1>CleanFeed</h1>
+        <label class="toggle">
+          <input type="checkbox" id="enableToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+      
+      <div class="mode-row">
+        <select id="filterModeSelect" class="mode-select">
+          <option value="blur">🌫️ Blur</option>
+          <option value="remove">🗑️ Remove</option>
+        </select>
+        <span id="quickStatsText" class="stats-badge">0 filtered</span>
+      </div>
+    </div>
+    
+    <div class="actions">
+      <button id="clearCacheBtn" class="action-btn">Clear Cache</button>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

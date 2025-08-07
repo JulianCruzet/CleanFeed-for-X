@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Debug</title>
+</head>
+<body>
+  <h3>Debug Popup</h3>
+  <p>If you see this, the popup loads!</p>
+  <div id="log"></div>
+  <script>
+    // Absolutely minimal - just log what's happening
+    const log = document.getElementById('log');
+    log.innerHTML = 'Script running...<br>';
+    
+    // Check what's available
+    if (typeof chrome !== 'undefined') {
+      log.innerHTML += 'Chrome API exists<br>';
+      
+      // The error might be from Chrome trying to restore a connection
+      // Let's see if we can catch it
+      window.addEventListener('error', function(e) {
+        log.innerHTML += 'Error caught: ' + e.message + '<br>';
+      });
+      
+      // Check if this is a reload scenario
+      if (chrome.runtime && chrome.runtime.id) {
+        log.innerHTML += 'Extension ID: ' + chrome.runtime.id + '<br>';
+      }
+    } else {
+      log.innerHTML += 'No Chrome API<br>';
+    }
+  </script>
+</body>
+</html>

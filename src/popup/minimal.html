@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 280px; font-family: system-ui; }
+    .popup { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 16px; }
+    .title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+    .controls { display: flex; gap: 12px; align-items: center; }
+    select { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 10px; border-radius: 6px; flex: 1; }
+    .toggle { position: relative; width: 40px; height: 20px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background: rgba(255,255,255,0.3); border-radius: 20px; transition: .3s; }
+    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background: white; border-radius: 50%; transition: .3s; }
+    input:checked + .slider { background: rgba(76,175,80,0.8); }
+    input:checked + .slider:before { transform: translateX(20px); }
+  </style>
+</head>
+<body>
+  <div class="popup">
+    <div class="title">CleanFeed for X</div>
+    <div class="controls">
+      <select id="mode">
+        <option value="blur">🌫️ Blur</option>
+        <option value="remove">🗑️ Remove</option>
+      </select>
+      <label class="toggle">
+        <input type="checkbox" id="enabled" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+  <script>
+    // Inline script to avoid any module loading issues
+    (function() {
+      'use strict';
+      
+      // Don't run if chrome isn't available
+      if (typeof chrome === 'undefined' || !chrome.storage) {
+        console.log('Chrome API not available');
+        return;
+      }
+      
+      let settings = { enabled: true, filterMode: 'blur' };
+      
+      // Load settings
+      try {
+        chrome.storage.local.get(['settings'], function(result) {
+          if (chrome.runtime.lastError) {
+            console.log('Storage error:', chrome.runtime.lastError.message);
+            return;
+          }
+          if (result.settings) {
+            settings = result.settings;
+            document.getElementById('enabled').checked = settings.enabled;
+            document.getElementById('mode').value = settings.filterMode;
+          }
+        });
+      } catch (e) {
+        console.log('Load error:', e);
+      }
+      
+      // Save on change
+      function save() {
+        try {
+          chrome.storage.local.set({ settings: settings }, function() {
+            if (chrome.runtime.lastError) {
+              console.log('Save error:', chrome.runtime.lastError.message);
+            } else {
+              // Notify active tabs about settings change
+              chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+                if (tabs[0]?.id) {
+                  chrome.tabs.sendMessage(tabs[0].id, {
+                    type: 'SETTINGS_CHANGED',
+                    settings: settings
+                  }, function() {
+                    // Ignore errors when sending to tabs
+                    if (chrome.runtime.lastError) {
+                      console.log('Tab message ignored:', chrome.runtime.lastError);
+                    }
+                  });
+                }
+              });
+            }
+          });
+        } catch (e) {
+          console.log('Save error:', e);
+        }
+      }
+      
+      // Event listeners
+      document.getElementById('enabled').addEventListener('change', function(e) {
+        settings.enabled = e.target.checked;
+        save();
+      });
+      
+      document.getElementById('mode').addEventListener('change', function(e) {
+        settings.filterMode = e.target.value;
+        save();
+      });
+    })();
+  </script>
+</body>
+</html>
