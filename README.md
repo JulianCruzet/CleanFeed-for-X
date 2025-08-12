@@ -1,25 +1,37 @@
 # CleanFeed for X
 
-A Chrome extension that filters NSFW content and OnlyFans promotional posts on X (Twitter).
+A Chrome extension that filters NSFW content and OnlyFans promotional posts on X (Twitter) to give you a cleaner, more professional browsing experience.
 
 ## Features
 
-- 🔍 **Smart Keyword Detection**: Filters posts containing OnlyFans, promotional content, and configurable keywords
-- 👁️ **Blur or Remove**: Choose between blurring content (with option to reveal) or completely removing it
-- ⚡ **Real-time Filtering**: Works seamlessly with Twitter's infinite scroll
-- ⚙️ **Customizable Settings**: Adjust filter strictness and add custom keywords
-- 📊 **Statistics Tracking**: Monitor how much content is being filtered
-- 💾 **Smart Caching**: 24-hour cache for improved performance
+- 🛡️ **Comprehensive Filtering**: Removes OnlyFans promotions, NSFW usernames, Telegram links, and leak-related content
+- 👁️ **Two Filter Modes**: Choose between blurring content (with unblur option) or completely removing it
+- ⚡ **Real-time Processing**: Works seamlessly with Twitter's infinite scroll - filters tweets, replies, and comments
+- 🎯 **Smart Detection**: Case-sensitive "OF" filtering, username analysis, bio text scanning
+- 📊 **Daily Stats**: Track how much content is filtered each day
+- 💾 **Performance Optimized**: 24-hour caching system, <1ms keyword detection
+- 🔒 **Privacy-First**: All processing happens locally on your device - no data collection
 
 ## Installation
 
-### Development Build
+### Option 1: Chrome Web Store (Recommended)
+*Coming soon - extension is under review*
 
-1. **Clone the repository**
+### Option 2: Install from Source
+
+**Prerequisites:**
+- Node.js 16+ and npm installed
+- Chrome browser
+- Basic command line knowledge
+
+**Step-by-step installation:**
+
+1. **Download the code**
    ```bash
-   git clone https://github.com/yourusername/cleanfeed-for-x.git
-   cd cleanfeed-for-x
+   git clone <this-repository-url>
+   cd TwitterBlocker
    ```
+   *Or download as ZIP and extract*
 
 2. **Install dependencies**
    ```bash
@@ -30,44 +42,54 @@ A Chrome extension that filters NSFW content and OnlyFans promotional posts on X
    ```bash
    npm run build
    ```
-   For development with auto-rebuild:
-   ```bash
-   npm run dev
-   ```
+   This creates a `dist` folder with all extension files.
 
-4. **Load in Chrome**
-   - Open Chrome and navigate to `chrome://extensions/`
-   - Enable "Developer mode" (toggle in top right)
-   - Click "Load unpacked"
+4. **Load into Chrome**
+   - Open Chrome and go to `chrome://extensions/`
+   - Turn on **"Developer mode"** (toggle in top-right corner)
+   - Click **"Load unpacked"** 
    - Select the `dist` folder from this project
-
-5. **Test the extension**
-   - Navigate to https://twitter.com or https://x.com
    - The extension icon should appear in your toolbar
-   - Click the icon to access settings
 
-## Usage
+5. **Verify it's working**
+   - Go to https://twitter.com or https://x.com
+   - Look for inappropriate content being blurred/removed
+   - Click the extension icon to open settings
 
-### Settings
+## How to Use
 
-- **Enable/Disable**: Toggle the extension on/off
-- **Filter Mode**: 
-  - Blur: Hides content with an overlay, click to reveal
-  - Remove: Completely removes content from feed
-- **Strictness**:
-  - Relaxed: Only obvious promotional content
-  - Moderate: Balanced filtering (recommended)
-  - Strict: Aggressive filtering
-- **Custom Keywords**: Add your own keywords to filter
+### Basic Controls
+1. **Click the extension icon** in your Chrome toolbar to open settings
+2. **Toggle On/Off**: Master switch to enable/disable all filtering
+3. **Choose Filter Mode**:
+   - 🌫️ **Blur**: Hides content with overlay, click "Show Post" to reveal
+   - 🗑️ **Remove**: Completely removes filtered content from your feed
+4. **Clear Cache**: Reset user classifications (if someone's content isn't filtering properly)
 
-### Default Filtered Content
+### What Gets Filtered
 
-- "OnlyFans" mentions (case-insensitive)
-- "OF" as a standalone word
-- "Link in bio" and similar phrases
-- Payment platform mentions (CashApp, Venmo)
-- "Premium/Exclusive content" offers
-- "DM for prices" and selling indicators
+**OnlyFans & Adult Content:**
+- "OnlyFans" mentions
+- "OF" in all caps (but not lowercase "of")
+- "O.F" and "O F" variations
+- Adult/NSFW usernames (e.g., "sexygirl123", "xxxmodel")
+
+**Promotional Spam:**
+- "Link in bio", "Link in comments"  
+- "DM for prices", "Selling content"
+- "Premium content", "Exclusive content"
+- Payment requests (CashApp, Venmo, PayPal)
+
+**Suspicious Content:**
+- Telegram channel links
+- "Leaked", "leak", "leaks" related posts
+- Suspicious URL patterns
+
+### Content Types Filtered
+- ✅ **Main tweets** in timeline
+- ✅ **Replies** to tweets  
+- ✅ **Comments** in threads
+- ✅ **Quote tweets** with filtered content
 
 ## Development
 
@@ -124,15 +146,27 @@ npm test -- --watch
 ## Troubleshooting
 
 ### Extension not working?
-1. Make sure you're on twitter.com or x.com
-2. Check that the extension is enabled (toggle in popup)
-3. Reload the Twitter page
-4. Check Chrome console for any errors
+1. **Check the website**: Only works on twitter.com and x.com
+2. **Verify it's enabled**: Click extension icon, make sure toggle is ON
+3. **Reload the page**: Refresh Twitter/X after enabling
+4. **Developer mode**: Make sure "Developer mode" is still enabled in chrome://extensions/
 
-### Filters not catching content?
-1. Try increasing strictness level
-2. Add custom keywords for specific content
-3. Clear cache and reload
+### Content not being filtered?
+1. **Wait a moment**: Some content is processed as you scroll
+2. **Clear cache**: Click "Clear Cache" button in extension popup
+3. **Check filter mode**: Make sure you're not in "Remove" mode if you want to see blurred content
+4. **Manual reporting**: Some content may slip through - this is normal for AI-resistant posts
+
+### Extension disappeared?
+1. **Check extensions page**: Go to chrome://extensions/ and make sure it's still enabled
+2. **Reload extension**: Toggle it off and on
+3. **Rebuild**: Run `npm run build` and reload the unpacked extension
+
+### Performance issues?
+The extension is optimized for speed, but if you notice lag:
+1. **Clear cache** in the extension popup
+2. **Restart Chrome** 
+3. **Check other extensions** that might conflict
 
 ## Contributing
 
